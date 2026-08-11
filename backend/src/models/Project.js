@@ -1,36 +1,47 @@
 import mongoose from "mongoose";
 
-export const projectSchema = new mongoose.Schema({
+const projectSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: [true, 'Please provide a project name'],
+      trim: true,
+      maxlength: [100, 'Project name cannot exceed 100 characters']
     },
-    Descrption:{
-        type: String,
-        required: true,
+    description: {
+      type: String,
+      required: [true, 'Please provide a project description'],
+      maxlength: [1000, 'Description cannot exceed 1000 characters']
     },
-
-    StartDate: {
+    startdate: {
         type: Date,
-        required: true,
+        required: [true, 'Please provide a startdate']
     },
-
-    Deadline: {
-        type: Date,
-        required: true,
+    deadline: {
+      type: Date,
+      required: [true, 'Please provide a deadline']
     },
-
-    owner:{
-        type: mongoose.Schema.type.ObjectId,
-        ref: "User",
-        required: true,
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    teamMembers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
+    status: {
+      type: String,
+      enum: ['Planning', 'Active', 'On Hold', 'Completed'],
+      default: 'Planning'
     }
-},
-{
+  },
+  {
     timestamps: true
-}
+  }
 );
 
-const Project = mongoose.model("Project", projectSchema);
+const Project = mongoose.model('Project', projectSchema);
 export default Project;
