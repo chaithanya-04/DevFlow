@@ -3,8 +3,13 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const generateToken = (userId, role) => {
-  return jwt.sign({ userId, role }, process.env.JWT_SECRET, process.env.JWT_EXPIRE);
+  return jwt.sign(
+    { userId, role },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRE || '7d' }
+  );
 };
+
 
 // POST /api/auth/signup
 export const signup = async (req, res) => {
@@ -22,7 +27,7 @@ export const signup = async (req, res) => {
     const userRole = role === 'Admin' ? 'Developer' : role || 'Developer';
     
     const user = await User.create({ name, email, password: hashedPassword, role: userRole });
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
     
     res.status(201).json(
       { 
@@ -35,7 +40,7 @@ export const signup = async (req, res) => {
 
 // POST /api/auth/login
 export const login = async (req, res) => {
-  console.log("LOGIN CONTROLLER HIT");
+  console.log("REACHED LOGIN CONTROLLER");
   try {
     const { email, password } = req.body;
     
@@ -55,7 +60,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
     
-    const token = generateToken(user._id);
+    const token = generateToken(user._id, user.role);
     
     res.status(200).json({ success: true, token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (error) {
