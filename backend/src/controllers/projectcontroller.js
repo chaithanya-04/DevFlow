@@ -1,28 +1,139 @@
-import Project from "../models/Project";
+import Project from "../models/Project.js";
 
-export const createProject = (req, res) => {
-    try{
-        const { name, description, startdate, deadline, teamMembers, status} = req.body;
+export const createProject = async(req, res) => {
+    try {
+    const { name, description, startdate, deadline} = req.body;
 
-        const project = await Project.create({
-            name, Description, StartDate, Deadline,
-            owner: req.user.userId,
-            teamMembers: teamMembers || [],
-            status
-        });
-
-        await project.populate('owner', 'name email')
-
-        res.status(201).json({
-        success: true,
-        data: project
-        });
+    if (!name || !description || !startdate || !deadline) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide name, description, startdate and deadline'
+      });
     }
-    catch(error){
-        res.status(500).json({
+
+    const project = await Project.create({
+      name,
+      description,
+      startdate,
+      deadline,
+      owner: req.user.userId
+    });
+
+    await project.populate('owner', 'name email role');
+
+    res.status(201).json({
+      success: true,
+      data: project
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
-      message: 'Error creating project',
+      message: 'Server error',
       error: error.message
     });
+  }
+};
+export const getAllProjects = async(req,res) => {
+    try {
+    const projects = await Project.find()
+      .populate('owner', 'name email role')
+      .populate('teamMembers', 'name email role')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: projects.length,
+      data: projects
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+
+export const getProjectById = async(req,res) =>{
+    try {
+    const project = await Project.findById(req.params.id)
+      .populate('owner', 'name email role')
+      .populate('teamMembers', 'name email role');
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found'
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      data: project
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
+export const updateProject = async(req, res) => {
+    try{
+        let Project = await Project.findById(req.params.Id);
+
+        if(!project){
+            res.status(404).json({
+                success: false,
+                message: 'Project not found'
+            });
+        }
+        const {name, description, startdate, deadline, status} = req.body;
+
+        project = await Project.findByIdAndUpdate(
+            req.params.id,
+            {name, description, startdate, deadline, status},
+            {new: true, runValidators: true}
+        ).populate('owner', 'name email role');
+        
+        res.status(200).json({
+            success: true,
+            data: project
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server error',
+            error: error.message
+        });
+    }
+};
+
+export const deleteProject = async(req,res) =>{
+    try {
+    const project = await Project.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found'
+      });
+    }
+
+    await project.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: 'Project deleted successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
 };

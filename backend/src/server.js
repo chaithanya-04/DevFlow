@@ -5,9 +5,9 @@ import cors from "cors";
 import dns from "dns";
 
 import connectDB from "./config/db.js";
-import authRoutes from "./routes/auth.js"
+import authRoutes from "./routes/auth.js";
+import projectRoutes from "./routes/project.js";
 
-dotenv.config();
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 connectDB();
@@ -17,10 +17,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use('/api/projects', projectRoutes);
 
-app.get("/", (req,res) => {
-    res.json({message: "API is running!"})
-})
+app.get("/api/health", (req,res) => {
+    res.json({
+        success: true,
+        message: "API is running!"});
+});
 
 const PORT = process.env.PORT || 3000;
 
