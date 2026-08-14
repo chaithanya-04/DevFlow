@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import api from "..api/axios";
+import api from "../api/axios";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import { Plus, Calendar, User, Trash2, Edit } from 'lucide-react';
 import { useActionState } from "react";
@@ -28,7 +28,7 @@ const Projects =() =>{
         try{
             const res = await api.get('/projects');
             setProjects(res.data.data);
-        }catch(error){
+        }catch(err){
             console.error('Failed to fetch projects', err);
         } finally {
             setLoading(false);
@@ -56,7 +56,7 @@ const Projects =() =>{
         try{
             await api.delete(`/projects/${id}`);
             fetchProjects();
-        }catch(error){
+        }catch(err){
             alert(err.response?.data?.message || 'Failed to delete project');
         }
     };
@@ -87,7 +87,7 @@ const Projects =() =>{
         </div>
         {isAdmin && (
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowModel(true)}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus size={18} />
@@ -101,7 +101,7 @@ const Projects =() =>{
           <p className="text-gray-500">No projects yet.</p>
           {isAdmin && (
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => setShowModel(true)}
               className="mt-4 text-blue-600 hover:underline"
             >
               Create your first project
@@ -175,18 +175,18 @@ const Projects =() =>{
         </div>
       )}
       {/* Create Project Modal */}
-      {showModal && (
+      {showModel && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
             <h3 className="text-xl font-bold text-gray-900 mb-4">Create New Project</h3>
-            <form onSubmit={handleCreate} className="space-y-4">
+            <form onSubmit={handlecreate} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
-                  onChange={handleChange}
+                  onChange={handlechange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="e.g. Asset Flow App"
@@ -197,7 +197,7 @@ const Projects =() =>{
                 <textarea
                   name="description"
                   value={formData.description}
-                  onChange={handleChange}
+                  onChange={handlechange}
                   required
                   rows={3}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -205,12 +205,12 @@ const Projects =() =>{
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Deadline</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Start date</label>
                 <input
                   type="date"
                   name="startdate"
                   value={formData.startdate}
-                  onChange={handleChange}
+                  onChange={handlechange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
@@ -221,7 +221,7 @@ const Projects =() =>{
                   type="date"
                   name="deadline"
                   value={formData.deadline}
-                  onChange={handleChange}
+                  onChange={handlechange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
@@ -229,7 +229,7 @@ const Projects =() =>{
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => setShowModel(false)}
                   className="flex-1 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                 >
                   Cancel

@@ -36,7 +36,7 @@ const ProjectDetails = () =>{
     const handleUpdate = async (e) =>{
         e.preventDefault();
         try{
-            const res = await api.put(`/projects/${id}`,{
+            const res = await api.put(`/projects/${id}`, {
                 name: editData.name,
                 description: editData.description,
                 startdate: editData.startdate,
@@ -45,7 +45,7 @@ const ProjectDetails = () =>{
             });
             setProject(res.data.data);
             setIsEditing(false);
-        }catch(error){
+        }catch(err){
             alert(err.response?.data?.message || 'Failed to update project');
         }
     };

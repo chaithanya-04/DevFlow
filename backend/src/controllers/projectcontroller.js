@@ -83,7 +83,7 @@ export const getProjectById = async(req,res) =>{
 
 export const updateProject = async(req, res) => {
     try{
-        let Project = await Project.findById(req.params.Id);
+        let project = await Project.findById(req.params.id);
 
         if(!project){
             res.status(404).json({
