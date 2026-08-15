@@ -7,6 +7,7 @@ import dns from "dns";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import projectRoutes from "./routes/project.js";
+import taskRoutes from "./routes/task.js";
 
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/api/health", (req,res) => {
     res.json({
