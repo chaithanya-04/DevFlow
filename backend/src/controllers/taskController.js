@@ -2,7 +2,7 @@ import Task from '../models/Task.js';
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description, project, priority, difficulty, estimatedTime, dueDate } = req.body;
+    const { title, description, project, assignedTo, priority, difficulty, estimatedTime, dueDate } = req.body;
 
     if (!title || !project) {
       return res.status(400).json({
@@ -15,6 +15,7 @@ export const createTask = async (req, res) => {
       title,
       description: description || '',
       project,
+      assignedTo,
       createdBy: req.user.userId,
       priority: priority || 'Medium',
       difficulty: difficulty || 'Medium',
@@ -108,11 +109,11 @@ export const updateTask = async (req, res) => {
       });
     }
 
-    const { title, description, priority, difficulty, estimatedTime, dueDate } = req.body;
+    const { title, description, project, assignedTo, priority, difficulty, estimatedTime, dueDate } = req.body;
 
     task = await Task.findByIdAndUpdate(
       req.params.id,
-      { title, description, priority, difficulty, estimatedTime, dueDate },
+      { title, description, project, assignedTo, priority, difficulty, estimatedTime, dueDate },
       { new: true, runValidators: true }
     ).populate('project', 'name')
      .populate('assignedTo', 'name email')

@@ -9,6 +9,7 @@ const Tasks = () => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dragOverColumn, setDragOverColumn] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
@@ -19,6 +20,7 @@ const Tasks = () => {
     title: '',
     description: '',
     project: '',
+    assignedTo: '',
     priority: 'Medium',
     difficulty: 'Medium',
     estimatedTime: '',
@@ -30,6 +32,7 @@ const Tasks = () => {
   useEffect(() => {
     fetchTasks();
     fetchProjects();
+    fetchUsers();
   }, []);
 
   const fetchTasks = async () => {
@@ -49,6 +52,14 @@ const Tasks = () => {
       setProjects(res.data.data);
     } catch (err) {
       console.error('Failed to fetch projects', err);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const res = await api.get('/users');setUsers(res.data.data);
+    } catch (err) {
+      console.error('Failed to fetch users', err);
     }
   };
   
@@ -120,6 +131,7 @@ const Tasks = () => {
     setFormData({
       title: task.title,
       description: task.description || '',
+      assignedTo: task.assignedTo?._id || task.assignedTo || '',
       project: task.project?._id || task.project,
       priority: task.priority,
       difficulty: task.difficulty,
@@ -222,6 +234,22 @@ const Tasks = () => {
                   ))}
                 </select>
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+                <select
+                name="assignedTo"
+                value={formData.assignedTo}
+                onChange={(e) =>
+                  setFormData({...formData,assignedTo: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  <option value="">Unassigned</option>
+                  {users.map((u) => (
+                    <option key={u._id} value={u._id}>
+                      {u.name} ({u.role})
+                    </option>
+                  ))}
+                  </select>
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
@@ -285,6 +313,24 @@ const Tasks = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Project</label>
+                <select value={formData.project} onChange={(e) => setFormData({...formData, project: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                  <option value="">Select a project</option>
+                  {projects.map((p) => (<option key={p._id} value={p._id}>{p.name}
+                  </option>))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+                <select
+                value={formData.assignedTo} onChange={(e) => setFormData({...formData, assignedTo: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                  <option value="">Unassigned</option>
+                  {users.map((u) => (<option key={u._id} value={u._id}> {u.name} ({u.role})</option>))}
+                </select>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
