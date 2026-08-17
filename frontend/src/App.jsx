@@ -7,6 +7,7 @@ import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectDetails';
+import Tasks from './pages/Tasks';
 import Unauthorized from './pages/Unauthorized';
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
           <Route path="/projects/:id" element={
             <ProtectedRoute><ProjectDetails /></ProtectedRoute>
           } />
+          <Route path="/tasks" element={
+            <ProtectedRoute><Tasks /></ProtectedRoute>
+            } />
           <Route path="/" element={
             <ProtectedRoute><Dashboard /></ProtectedRoute>
           } />

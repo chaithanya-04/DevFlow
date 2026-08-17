@@ -31,8 +31,8 @@ const Signup = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-            <input type="text" name="name" value={formData.name} onChange={handleSubmit} required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Emma Watson" />
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" placeholder="John Doe" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>

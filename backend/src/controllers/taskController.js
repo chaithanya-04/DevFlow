@@ -1,73 +1,74 @@
-import Task from "../models/Task.js";
+import Task from '../models/Task.js';
 
-export const createTask = async(req, res) =>{
-    try{
-        const { title, description, project, priority, difficulty, estimatedTime, dueDate } = req.body;
-        if(!title || !project){
-            return res.status(400).json({
-                success:false,
-                message: "Kindly provide the title and project"
-            });
-        }
+export const createTask = async (req, res) => {
+  try {
+    const { title, description, project, priority, difficulty, estimatedTime, dueDate } = req.body;
 
-        const task = await Task.create({
-            title,
-            description: description || '',
-            project,
-            createdBy: req.user.userId,
-            priority: priority || 'Medium',
-            difficulty: difficulty || 'Medium',
-            estimatedTime: estimatedTime || '',
-            dueDate: dueDate || null
-        });
-        await task.populate('project', 'name');
-        await task.populate('createdBy', 'name email');
-        
-        res.status(201).json({
-            success: true,
-            data: task
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Server error',
-            error: error.message
-        });
+    if (!title || !project) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide title and project'
+      });
     }
+
+    const task = await Task.create({
+      title,
+      description: description || '',
+      project,
+      createdBy: req.user.userId,
+      priority: priority || 'Medium',
+      difficulty: difficulty || 'Medium',
+      estimatedTime: estimatedTime || '',
+      dueDate: dueDate || null
+    });
+
+    await task.populate('project', 'name');
+    await task.populate('createdBy', 'name email');
+
+    res.status(201).json({
+      success: true,
+      data: task
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
 };
 
+export const getTasks = async (req, res) => {
+  try {
+    let filter = {};
+    
+    if (req.user.role === 'Developer') {
+      filter.assignedTo = req.user.userId;
+    }
 
-export const getTasks = async(req,res)=> {
-    try{
-        let filter = {};
+    if (req.query.project) {
+      filter.project = req.query.project;
+    }
 
-        if(req.user.role === 'Developer'){
-        filter.assignedTo = req.user.userId;
-        }
+    const tasks = await Task.find(filter)
+      .populate('project', 'name')
+      .populate('assignedTo', 'name email role')
+      .populate('createdBy', 'name email')
+      .sort({ createdAt: -1 });
 
-        if(req.query.project){
-            filter.project = req.query.project;
-        }
-
-        const task = await Task.find(filter)
-        .populate('project', 'name')
-        .populate('assignedTo', 'name email role')
-        .populate('createdBy', 'name email')
-        .sort({createdAt: -1});
-
-        res.status(200).json({
-            success: true,
-            count: tasks.length,
-            data: tasks
-        });
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Server error',
-                error: error.message
-            });
-        }
-    };
+    res.status(200).json({
+      success: true,
+      count: tasks.length,
+      data: tasks
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
 
 export const getTaskById = async (req, res) => {
   try {
@@ -161,7 +162,6 @@ export const assignTask = async (req, res) => {
     });
   }
 };
-
 
 export const updateTaskStatus = async (req, res) => {
   try {

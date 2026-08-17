@@ -1,5 +1,5 @@
-const TaskCard = ({ task, ondragstart, onclick}) => {
-    const priorityColors = {
+const TaskCard = ({ task, onDragStart, onClick }) => {
+  const priorityColors = {
     High: 'border-l-red-500 bg-red-50',
     Medium: 'border-l-yellow-500 bg-yellow-50',
     Low: 'border-l-green-500 bg-green-50'
@@ -7,7 +7,7 @@ const TaskCard = ({ task, ondragstart, onclick}) => {
 
   const formatDate = (date) => {
     if (!date) return 'No deadline';
-    return new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short',  });
+    return new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
   };
 
   return (

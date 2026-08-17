@@ -1,20 +1,19 @@
-import Project from "../models/Project.js";
+import Project from '../models/Project.js';
 
-export const createProject = async(req, res) => {
-    try {
-    const { name, description, startdate, deadline} = req.body;
+export const createProject = async (req, res) => {
+  try {
+    const { name, description, deadline } = req.body;
 
-    if (!name || !description || !startdate || !deadline) {
+    if (!name || !description || !deadline) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide name, description, startdate and deadline'
+        message: 'Please provide name, description, and deadline'
       });
     }
 
     const project = await Project.create({
       name,
       description,
-      startdate,
       deadline,
       owner: req.user.userId
     });
@@ -33,8 +32,9 @@ export const createProject = async(req, res) => {
     });
   }
 };
-export const getAllProjects = async(req,res) => {
-    try {
+
+export const getAllProjects = async (req, res) => {
+  try {
     const projects = await Project.find()
       .populate('owner', 'name email role')
       .populate('teamMembers', 'name email role')
@@ -54,9 +54,8 @@ export const getAllProjects = async(req,res) => {
   }
 };
 
-
-export const getProjectById = async(req,res) =>{
-    try {
+export const getProjectById = async (req, res) => {
+  try {
     const project = await Project.findById(req.params.id)
       .populate('owner', 'name email role')
       .populate('teamMembers', 'name email role');
@@ -81,39 +80,40 @@ export const getProjectById = async(req,res) =>{
   }
 };
 
-export const updateProject = async(req, res) => {
-    try{
-        let project = await Project.findById(req.params.id);
+export const updateProject = async (req, res) => {
+  try {
+    let project = await Project.findById(req.params.id);
 
-        if(!project){
-            res.status(404).json({
-                success: false,
-                message: 'Project not found'
-            });
-        }
-        const {name, description, startdate, deadline, status} = req.body;
-
-        project = await Project.findByIdAndUpdate(
-            req.params.id,
-            {name, description, startdate, deadline, status},
-            {new: true, runValidators: true}
-        ).populate('owner', 'name email role');
-        
-        res.status(200).json({
-            success: true,
-            data: project
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Server error',
-            error: error.message
-        });
+    if (!project) {
+      return res.status(404).json({
+        success: false,
+        message: 'Project not found'
+      });
     }
+
+    const { name, description, deadline, status } = req.body;
+
+    project = await Project.findByIdAndUpdate(
+      req.params.id,
+      { name, description, deadline, status },
+      { new: true, runValidators: true }
+    ).populate('owner', 'name email role');
+
+    res.status(200).json({
+      success: true,
+      data: project
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
 };
 
-export const deleteProject = async(req,res) =>{
-    try {
+export const deleteProject = async (req, res) => {
+  try {
     const project = await Project.findById(req.params.id);
 
     if (!project) {
