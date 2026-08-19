@@ -129,7 +129,7 @@ const AIGenerateModal = ({ projectId, projects, onTasksCreated, onClose }) => {
               onClick={handleDone}
               className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
             >
-              Done — View on Kanban Board
+              Done! View on Kanban Board
             </button>
           </div>
         )}
