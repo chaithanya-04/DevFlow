@@ -3,7 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import KanbanColumn from '../components/kanban/KanbanColumn';
-import { Plus, X, User, Calendar, Flag } from 'lucide-react';
+import AIGenerateModal from '../components/ai/AIGenerateModal';
+import { Plus, X, User, Calendar, Flag, Sparkles } from 'lucide-react';
 
 const Tasks = () => {
   const { user } = useAuth();
@@ -15,6 +16,7 @@ const Tasks = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [showAI, setShowAI] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -176,16 +178,28 @@ const Tasks = () => {
           <h2 className="text-2xl font-bold text-gray-900">Tasks</h2>
           <p className="text-gray-500 mt-1">Drag and drop to move tasks between columns</p>
         </div>
+      <div className="flex items-center gap-3">
         {canManage && (
+          <>
           <button
-            onClick={() => { resetForm(); setShowCreate(true); }}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          onClick={() => {resetForm();
+            setShowCreate(true);
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
-            <Plus size={18} /> New Task
+            <Plus size={18} />
+            New Task
           </button>
-        )}
+          <button
+          onClick={() => setShowAI(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+          >
+          <Sparkles size={18} />
+          Generate with AI
+          </button>
+          </>)}
       </div>
-
+      </div>
       {/* Kanban Board */}
       <div className="flex gap-6 overflow-x-auto pb-4">
         {Object.entries(columns).map(([status, columnTasks]) => (
@@ -379,6 +393,15 @@ const Tasks = () => {
             </form>
           </div>
         </div>
+      )}
+      {/* AI Modal */}
+      {showAI && (
+        <AIGenerateModal
+        projectId={projects[0]?._id || ''}
+        projects={projects}
+        onTasksCreated={fetchTasks}
+        onClose={() => setShowAI(false)}
+        />
       )}
     </DashboardLayout>
   );

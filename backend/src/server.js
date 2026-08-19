@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import dns from "dns";
@@ -9,6 +8,7 @@ import authRoutes from "./routes/auth.js";
 import projectRoutes from "./routes/project.js";
 import taskRoutes from "./routes/task.js";
 import userRoutes from "./routes/user.js";
+import aiRoutes from "./routes/ai.js";
 
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -22,6 +22,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.get("/api/health", (req,res) => {
     res.json({
