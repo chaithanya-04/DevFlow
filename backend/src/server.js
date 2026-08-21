@@ -9,6 +9,8 @@ import projectRoutes from "./routes/project.js";
 import taskRoutes from "./routes/task.js";
 import userRoutes from "./routes/user.js";
 import aiRoutes from "./routes/ai.js";
+import dashboardRoutes from "./routes/dashboard.js";
+import healthRoutes from "./routes/health.js"
 
 
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
@@ -23,8 +25,10 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/health", healthRoutes);
 
-app.get("/api/health", (req,res) => {
+app.get("/", (req,res) => {
     res.json({
         success: true,
         message: "API is running!"});
