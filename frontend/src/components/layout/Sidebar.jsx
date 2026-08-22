@@ -13,7 +13,6 @@ const Sidebar = () => {
     { label: 'Projects', icon: <FolderKanban size={20} />, path: '/projects', roles: ['Admin', 'Project Manager', 'Developer'] },
     { label: 'Tasks', icon: <ListTodo size={20} />, path: '/tasks', roles: ['Admin', 'Project Manager', 'Developer'] },
     { label: 'Team', icon: <Users size={20} />, path: '/team', roles: ['Admin', 'Project Manager'] },
-    { label: 'Admin Panel', icon: <Shield size={20} />, path: '/admin', roles: ['Admin'] },
     { label: 'Settings', icon: <Settings size={20} />, path: '/settings', roles: ['Admin', 'Project Manager', 'Developer'] },
   ];
 

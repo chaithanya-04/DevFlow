@@ -17,10 +17,10 @@ router.use(protect);
 
 router.get('/', getTasks);
 router.get('/:id', getTaskById);
-router.post('/', authorize('Admin', 'Project Manager'), createTask);
-router.put('/:id', authorize('Admin', 'Project Manager'), updateTask);
-router.put('/:id/assign', authorize('Admin', 'Project Manager'), assignTask);
-router.delete('/:id', authorize('Admin', 'Project Manager'), deleteTask);
+router.post('/', authorize('Project Manager'), createTask);
+router.put('/:id', authorize('Project Manager'), updateTask);
+router.put('/:id/assign', authorize('Project Manager'), assignTask);
+router.delete('/:id', authorize('Project Manager'), deleteTask);
 router.put('/:id/status', authorize('Admin', 'Project Manager', 'Developer'), updateTaskStatus);
 
 export default router;

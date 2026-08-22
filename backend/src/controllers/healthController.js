@@ -33,7 +33,7 @@ export const getHealthScore = async (req, res) => {
       1,
       Math.ceil((now - project.createdAt) / (1000 * 60 * 60 * 24))
     );
-    const velocity = parseFloat((completedTasks / daysSinceCreation).toFixed(2));
+    const taskCompletionRate = parseFloat((completedTasks / daysSinceCreation).toFixed(2));
 
     if (totalTasks === 0) {
       return res.status(200).json({
@@ -56,7 +56,7 @@ export const getHealthScore = async (req, res) => {
     - Pending Tasks: ${pendingTasks}
     - Overdue Tasks: ${overdueTasks}
     - High Priority Pending Tasks: ${highPriorityPending}
-    - Team Velocity: ${velocity} tasks completed per day
+    - Task Completion Rate: ${taskCompletionRate} tasks completed per day
     - Days Since Project Created: ${daysSinceCreation}
     
     Based on these numbers, calculate a Project Health Score from 0 to 100.
@@ -113,7 +113,7 @@ export const getHealthScore = async (req, res) => {
           pendingTasks,
           overdueTasks,
           highPriorityPending,
-          velocity
+          taskCompletionRate
         }
       }
     });

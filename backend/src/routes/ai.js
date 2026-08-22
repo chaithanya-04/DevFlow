@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use(protect);
 
-router.post('/generate-taskS',authorize('Admin', 'Project Manager'),generateTasks);
+router.post('/generate-taskS',authorize('Project Manager'),generateTasks);
 
 export default router;
