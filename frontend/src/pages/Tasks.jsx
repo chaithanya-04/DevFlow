@@ -175,8 +175,8 @@ const Tasks = () => {
     <DashboardLayout>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Tasks</h2>
-          <p className="text-gray-500 mt-1">Drag and drop to move tasks between columns</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Tasks</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Drag and drop to move tasks between columns</p>
         </div>
       <div className="flex items-center gap-3">
         {canManage && (
@@ -220,28 +220,28 @@ const Tasks = () => {
       {/* Create Task Modal */}
       {showCreate && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">Create Task</h3>
-              <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-gray-100 rounded">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Create Task</h3>
+              <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
                 <X size={20} />
               </button>
             </div>
             <form onSubmit={handleCreate} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
                 <input type="text" name="title" value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
                 <textarea name="description" value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" />
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project</label>
                 <select name="project" value={formData.project} onChange={(e) => setFormData({...formData, project: e.target.value})} required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500">
                   <option value="">Select a project</option>
                   {projects.map((p) => (
                     <option key={p._id} value={p._id}>{p.name}</option>
@@ -249,13 +249,13 @@ const Tasks = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Assign To</label>
                 <select
                 name="assignedTo"
                 value={formData.assignedTo}
                 onChange={(e) =>
                   setFormData({...formData,assignedTo: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500">
                   <option value="">Unassigned</option>
                   {users.map((u) => (
                     <option key={u._id} value={u._id}>
@@ -266,18 +266,18 @@ const Tasks = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priority</label>
                   <select name="priority" value={formData.priority} onChange={(e) => setFormData({...formData, priority: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Difficulty</label>
                   <select name="difficulty" value={formData.difficulty} onChange={(e) => setFormData({...formData, difficulty: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg">
                     <option>Easy</option>
                     <option>Medium</option>
                     <option>Hard</option>
@@ -286,19 +286,19 @@ const Tasks = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Estimated Time</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Time</label>
                   <input type="text" value={formData.estimatedTime} onChange={(e) => setFormData({...formData, estimatedTime: e.target.value})}
-                    placeholder="e.g. 4 hours" className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                    placeholder="e.g. 4 hours" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Due Date</label>
                   <input type="date" value={formData.dueDate} onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg" />
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowCreate(false)}
-                  className="flex-1 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+                  className="flex-1 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Cancel</button>
                 <button type="submit"
                   className="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create</button>
               </div>
@@ -310,56 +310,56 @@ const Tasks = () => {
       {/* Edit Task Modal */}
       {showEdit && selectedTask && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900">Edit Task</h3>
-              <button onClick={() => setShowEdit(false)} className="p-1 hover:bg-gray-100 rounded">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Edit Task</h3>
+              <button onClick={() => setShowEdit(false)} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
                 <X size={20} />
               </button>
             </div>
             <form onSubmit={handleUpdate} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title</label>
                 <input type="text" value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
                 <textarea value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project</label>
                 <select value={formData.project} onChange={(e) => setFormData({...formData, project: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg">
                   <option value="">Select a project</option>
                   {projects.map((p) => (<option key={p._id} value={p._id}>{p.name}
                   </option>))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Assign To</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Assign To</label>
                 <select
                 value={formData.assignedTo} onChange={(e) => setFormData({...formData, assignedTo: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg">
                   <option value="">Unassigned</option>
                   {users.map((u) => (<option key={u._id} value={u._id}> {u.name} ({u.role})</option>))}
                 </select>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priority</label>
                   <select value={formData.priority} onChange={(e) => setFormData({...formData, priority: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Difficulty</label>
                   <select value={formData.difficulty} onChange={(e) => setFormData({...formData, difficulty: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg">
                     <option>Easy</option>
                     <option>Medium</option>
                     <option>Hard</option>
@@ -368,25 +368,25 @@ const Tasks = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Estimated Time</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Estimated Time</label>
                   <input type="text" value={formData.estimatedTime} onChange={(e) => setFormData({...formData, estimatedTime: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Due Date</label>
                   <input type="date" value={formData.dueDate} onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg" />
                 </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="button" onClick={() => setShowEdit(false)}
-                  className="flex-1 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">Cancel</button>
+                  className="flex-1 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">Cancel</button>
                 <button type="submit"
                   className="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
               </div>
               {canManage && (
                 <button type="button" onClick={() => handleDelete(selectedTask._id)}
-                  className="w-full py-2 text-red-600 border border-red-300 rounded-lg hover:bg-red-50 mt-2">
+                  className="w-full py-2 text-red-600 border border-red-300 dark:border-red-900/30 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 mt-2">
                   Delete Task
                 </button>
               )}

@@ -35,13 +35,13 @@ const AIGenerateModal = ({ projectId, projects, onTasksCreated, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Sparkles className="text-purple-600" size={24} />
-            <h3 className="text-xl font-bold text-gray-900">AI Task Generation</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">AI Task Generation</h3>
           </div>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
+          <button onClick={onClose} className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-500 dark:text-gray-400">
             <X size={20} />
           </button>
         </div>
@@ -49,12 +49,12 @@ const AIGenerateModal = ({ projectId, projects, onTasksCreated, onClose }) => {
         {!generatedTasks ? (
           <form onSubmit={handleGenerate} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Project</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project</label>
               <select
                 value={selectedProject}
                 onChange={(e) => setSelectedProject(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">Select a project</option>
                 {projects.map((p) => (
@@ -64,7 +64,7 @@ const AIGenerateModal = ({ projectId, projects, onTasksCreated, onClose }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Project Description
               </label>
               <textarea
@@ -73,9 +73,9 @@ const AIGenerateModal = ({ projectId, projects, onTasksCreated, onClose }) => {
                 required
                 rows={5}
                 placeholder="e.g. Build a food delivery app with authentication, cart, payments, and real-time tracking."
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-purple-500"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 The AI will analyze this description and generate development tasks.
               </p>
             </div>
@@ -100,24 +100,24 @@ const AIGenerateModal = ({ projectId, projects, onTasksCreated, onClose }) => {
           </form>
         ) : (
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-green-600 bg-green-50 p-3 rounded-lg">
+            <div className="flex items-center gap-2 text-green-600 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
               <CheckCircle size={20} />
               <span className="font-medium">{generatedTasks.length} tasks generated and saved!</span>
             </div>
 
             <div className="space-y-3 max-h-80 overflow-y-auto">
               {generatedTasks.map((task, idx) => (
-                <div key={idx} className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <div key={idx} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-900">
                   <div className="flex items-start justify-between">
-                    <h4 className="font-semibold text-gray-900">{task.title}</h4>
+                    <h4 className="font-semibold text-gray-900 dark:text-gray-100">{task.title}</h4>
                     <span className={`px-2 py-0.5 rounded text-xs font-medium
-                      ${task.priority === 'High' ? 'bg-red-100 text-red-700' :
-                        task.priority === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-green-100 text-green-700'}`}>
+                      ${task.priority === 'High' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' :
+                        task.priority === 'Medium' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' :
+                        'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'}`}>
                       {task.priority}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                  <div className="flex items-center gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
                     <span>Difficulty: <strong>{task.difficulty}</strong></span>
                     <span>Est: <strong>{task.estimatedTime}</strong></span>
                   </div>

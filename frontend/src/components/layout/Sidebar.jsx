@@ -12,7 +12,6 @@ const Sidebar = () => {
     { label: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard', roles: ['Admin', 'Project Manager', 'Developer'] },
     { label: 'Projects', icon: <FolderKanban size={20} />, path: '/projects', roles: ['Admin', 'Project Manager', 'Developer'] },
     { label: 'Tasks', icon: <ListTodo size={20} />, path: '/tasks', roles: ['Admin', 'Project Manager', 'Developer'] },
-    { label: 'Team', icon: <Users size={20} />, path: '/team', roles: ['Admin', 'Project Manager'] },
     { label: 'Settings', icon: <Settings size={20} />, path: '/settings', roles: ['Admin', 'Project Manager', 'Developer'] },
   ];
 

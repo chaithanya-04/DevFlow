@@ -8,20 +8,20 @@ import { FolderOpen, CheckCircle2, Clock, AlertTriangle, TrendingUp, Activity } 
 
 const StatCard = ({ title, value, icon, color, subtitle }) => {
   const colors = {
-    blue: 'bg-blue-50 text-blue-600 border-blue-200',
-    green: 'bg-green-50 text-green-600 border-green-200',
-    yellow: 'bg-yellow-50 text-yellow-600 border-yellow-200',
-    red: 'bg-red-50 text-red-600 border-red-200',
-    purple: 'bg-purple-50 text-purple-600 border-purple-200'
+    blue: 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 border-blue-200',
+    green: 'bg-green-50 dark:bg-green-900/20 text-green-600 border-green-200',
+    yellow: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 border-yellow-200',
+    red: 'bg-red-50 dark:bg-red-900/20 text-red-600 border-red-200',
+    purple: 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 border-purple-200'
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
-          {subtitle && <p className="text-xs text-gray-400 mt-1">{subtitle}</p>}
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">{value}</p>
+          {subtitle && <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{subtitle}</p>}
         </div>
         <div className={`p-3 rounded-lg border ${colors[color]}`}>{icon}</div>
       </div>
@@ -77,10 +77,10 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Dashboard</h2>
-        <p className="text-gray-500 mt-1">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">
           {user?.role === 'Admin' ? 'System overview and analytics.' :
-           user?.role === 'Project Manager' ? 'Track project progress and team velocity.' :
+           user?.role === 'Project Manager' ? 'Track project progress.' :
            'Your tasks and project status at a glance.'}
         </p>
       </div>
@@ -141,12 +141,12 @@ const Dashboard = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6 mb-8">
+          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-8">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="font-semibold text-gray-900">Overall Completion</h3>
-              <span className="text-sm font-medium text-gray-600">{stats.completionPercentage}%</span>
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Overall Completion</h3>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">{stats.completionPercentage}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
+            <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-3">
               <div
                 className="bg-blue-600 h-3 rounded-full transition-all duration-500"
                 style={{ width: `${stats.completionPercentage}%` }}
@@ -157,32 +157,32 @@ const Dashboard = () => {
           {/* AI Health Score Section */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Quick Actions</h3>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                   onClick={() => navigate('/projects')}
-                  className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all text-left">
-                <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                  className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-900/30 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-left">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-lg">
                   <FolderOpen size={18} />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Manage Projects</p>
-                  <p className="text-xs text-gray-500">View and edit projects</p>
+                  <p className="font-medium text-gray-900 dark:text-gray-100">Manage Projects</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">View and edit projects</p>
                 </div>
                 </button>
                 <button
                 onClick={() => navigate('/tasks')}
-                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all text-left"
+                className="flex items-center gap-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-900/30 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-left"
                 >
-                <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
+                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded-lg">
                   <Activity size={18} />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Open Kanban</p>
-                  <p className="text-xs text-gray-500">Manage tasks and workflow</p>
+                  <p className="font-medium text-gray-900 dark:text-gray-100">Open Kanban</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Manage tasks and workflow</p>
                 </div>
                 </button>
               </div>
@@ -191,11 +191,11 @@ const Dashboard = () => {
           <div>
             {projects.length > 0 && (
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Select Project for Health Analysis</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Project for Health Analysis</label>
                 <select
                 value={selectedProject}
                 onChange={(e) => setSelectedProject(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-purple-500">
                   {projects.map((p) => (
                     <option key={p._id} value={p._id}>{p.name}</option>
                   ))}

@@ -11,6 +11,17 @@ const generateToken = (userId, role) => {
 };
 
 
+const formatUserResponse = (user) => ({
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  role: user.role,
+  avatar: user.avatar || '',
+  preferences: user.preferences || {
+    theme: 'system'
+  }
+});
+
 // POST /api/auth/signup
 export const signup = async (req, res) => {
   try {
@@ -29,10 +40,11 @@ export const signup = async (req, res) => {
     const user = await User.create({ name, email, password: hashedPassword, role: userRole });
     const token = generateToken(user._id, user.role);
     
-    res.status(201).json(
-      { 
-        success: true, token, user: { id: user._id, name: user.name, email: user.email, role: user.role } 
-      });
+    res.status(201).json({ 
+      success: true, 
+      token, 
+      user: formatUserResponse(user) 
+    });
   } catch (error) {
     console.error("SIGNUP ERROR:", error);
     res.status(500).json({ success: false, message: error.message });
@@ -63,7 +75,11 @@ export const login = async (req, res) => {
     
     const token = generateToken(user._id, user.role);
     
-    res.status(200).json({ success: true, token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    res.status(200).json({ 
+      success: true, 
+      token, 
+      user: formatUserResponse(user) 
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -73,7 +89,13 @@ export const login = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
-    res.status(200).json({ success: true, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ 
+      success: true, 
+      user: formatUserResponse(user) 
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

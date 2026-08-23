@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await api.get('/auth/me');
       setUser(res.data.user);
+      localStorage.setItem('user', JSON.stringify(res.data.user));
     } catch {
       logout();
     } finally {
@@ -45,6 +46,14 @@ export const AuthProvider = ({ children }) => {
     setUser(user);
   };
 
+  const updateUser = (updatedUserData) => {
+    setUser((prev) => {
+      const updated = { ...prev, ...updatedUserData };
+      localStorage.setItem('user', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -52,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signup, login, logout, loading, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, signup, login, logout, updateUser, loading, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

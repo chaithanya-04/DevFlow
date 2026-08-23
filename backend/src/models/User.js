@@ -31,13 +31,21 @@ export const  userSchema = new mongoose.Schema({
     },
 
     avatar: {
-    type: String,
-    default: '',
-    }
-},
-{
-    timestamps: true
-}
+      type: String,
+      default: '',
+    },
+
+    preferences: {
+      theme: {
+        type: String,
+        enum: ['light', 'dark', 'system'],
+        default: 'system',
+      },
+    },
+  },
+  {
+    timestamps: true,
+  }
 
 );
 
