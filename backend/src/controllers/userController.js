@@ -12,7 +12,7 @@ const formatUserResponse = (user) => ({
   },
 });
 
-// GET /api/users - list all users
+// GET /api/users
 export const getUsers = async (req, res) => {
   try {
     const users = await User.find()
@@ -32,7 +32,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// GET /api/users/profile - get current user profile & preferences
+// GET /api/users/profile
 export const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
@@ -56,7 +56,7 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// PUT /api/users/profile - update user profile (name, email, avatar)
+// PUT /api/users/profile
 export const updateProfile = async (req, res) => {
   try {
     const { name, email, avatar } = req.body;
@@ -157,7 +157,7 @@ export const updatePreferences = async (req, res) => {
   }
 };
 
-// PUT /api/users/change-password - change password
+// PUT /api/users/change-password
 export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;

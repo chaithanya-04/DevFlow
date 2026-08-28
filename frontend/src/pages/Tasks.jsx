@@ -1,3 +1,4 @@
+import socket from '../api/socket';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
@@ -35,7 +36,36 @@ const Tasks = () => {
     fetchTasks();
     fetchProjects();
     fetchUsers();
-  }, []);
+    const handleTaskUpdated = (data) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((t) =>
+        t._id === data.taskId ? { ...t, ...data.task } : t
+      ));
+    };
+    
+    const handleTaskCreated = (data) => {
+    setTasks((prevTasks) => {
+      if (prevTasks.find((t) => t._id === data.task._id)) {
+        return prevTasks;
+      }
+      return [...prevTasks, data.task];});
+    };
+    
+    const handleTaskDeleted = (data) => {
+    setTasks((prevTasks) =>
+      prevTasks.filter((t) => t._id !== data.taskId));
+    };
+
+  socket.on('task:updated', handleTaskUpdated);
+  socket.on('task:created', handleTaskCreated);
+  socket.on('task:deleted', handleTaskDeleted);
+
+  return () => {
+    socket.off('task:updated', handleTaskUpdated);
+    socket.off('task:created', handleTaskCreated);
+    socket.off('task:deleted', handleTaskDeleted);
+  };
+}, []);
 
   const fetchTasks = async () => {
     try {

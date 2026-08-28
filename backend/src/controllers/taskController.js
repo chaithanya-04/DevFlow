@@ -1,5 +1,10 @@
 import Task from '../models/Task.js';
-
+const emitTaskUpdate = (req, eventName, data) => {
+  const io = req.app.get('io');
+  if (io) {
+    io.emit(eventName, data);
+  }
+};
 export const createTask = async (req, res) => {
   try {
     const { title, description, project, assignedTo, priority, difficulty, estimatedTime, dueDate } = req.body;
@@ -25,6 +30,8 @@ export const createTask = async (req, res) => {
 
     await task.populate('project', 'name');
     await task.populate('createdBy', 'name email');
+
+    emitTaskUpdate(req, 'task:created', { task });
 
     res.status(201).json({
       success: true,
@@ -119,7 +126,12 @@ export const updateTask = async (req, res) => {
      .populate('assignedTo', 'name email')
      .populate('createdBy', 'name email');
 
-    res.status(200).json({
+     emitTaskUpdate(req, 'task:updated', {
+      taskId: task._id.toString(),
+      task,
+    });
+    
+     res.status(200).json({
       success: true,
       data: task
     });
@@ -149,6 +161,11 @@ export const assignTask = async (req, res) => {
         message: 'Task not found'
       });
     }
+
+    emitTaskUpdate(req, 'task:updated', {
+      taskId: task._id.toString(),
+      task,
+    });
 
     res.status(200).json({
       success: true,
@@ -188,6 +205,7 @@ export const updateTaskStatus = async (req, res) => {
         message: 'Task not found'
       });
     }
+    emitTaskUpdate(req, 'task:updated', { taskId: task._id.toString(), status: task.status, task });
 
     res.status(200).json({
       success: true,
@@ -215,6 +233,8 @@ export const deleteTask = async (req, res) => {
     }
 
     await task.deleteOne();
+
+    emitTaskUpdate(req, 'task:deleted', { taskId: req.params.id });
 
     res.status(200).json({
       success: true,
