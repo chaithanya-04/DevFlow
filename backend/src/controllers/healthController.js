@@ -42,7 +42,7 @@ export const getHealthScore = async (req, res) => {
           score: null,
           summary: 'No tasks found for this project. Add tasks to see a health score.',
           warnings: [],
-          stats: { totalTasks, completedTasks, pendingTasks, overdueTasks, velocity }
+          stats: { totalTasks, completedTasks, pendingTasks, overdueTasks, taskCompletionRate }
         }
       });
     }
@@ -119,6 +119,7 @@ export const getHealthScore = async (req, res) => {
     });
 
   } catch (error) {
+    console.error("HEALTH SCORE ERROR:", error);
     res.status(500).json({
       success: false,
       message: 'Health score analysis failed',

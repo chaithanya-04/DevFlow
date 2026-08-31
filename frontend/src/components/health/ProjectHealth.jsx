@@ -18,7 +18,8 @@ const ProjectHealth = ({ projectId }) => {
       const res = await api.get(`/health/${projectId}`);
       setHealth(res.data.data);
     } catch (error) {
-      console.error('Health score failed', error);
+      console.error('Health score failed', error.response?.data || error.message
+    );
       res.status(500).json({
         success: false,
         message: "Server error",
@@ -54,7 +55,6 @@ const ProjectHealth = ({ projectId }) => {
     );
   }
 
-  // Determine color based on score
   const getScoreColor = (score) => {
     if (score >= 80) return 'text-green-600 bg-green-50 dark:bg-green-900/20 border-green-200';
     if (score >= 50) return 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200';

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 import DashboardLayout from '../components/layout/DashboardLayout';
-import { ArrowLeft, Calendar, User, Edit, Trash2, Save, X } from 'lucide-react';
+import { ArrowLeft, Calendar, User, Users, Edit, Trash2, Save, X } from 'lucide-react';
 
 const ProjectDetails = () =>{
     const { id } = useParams();
@@ -79,6 +79,13 @@ const ProjectDetails = () =>{
     }
 
     if (!project) return null;
+
+    const peopleWorkingOnProject = [...(project?.teamMembers || []),
+    ...(project?.tasks || [])
+    .map(task => task.assignedTo)
+    .filter(Boolean)]
+    .filter((person, index, self) =>
+    index === self.findIndex(p => p._id === person._id));
 
     return (
     <DashboardLayout>
@@ -214,30 +221,42 @@ const ProjectDetails = () =>{
               )}
             </div>
 
-            <div className="prose max-w-none">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Description</h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
-                {project.description}
-              </p>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Team Members</h3>
-              {project.teamMembers?.length > 0 ? (
-                <div className="flex gap-3">
-                  {project.teamMembers.map((member) => (
-                    <div key={member._id} className="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 flex items-center justify-center text-sm font-bold">
-                        {member.name?.charAt(0)}
-                      </div>
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{member.name}</span>
-                    </div>
-                  ))}
+            {isAdmin && (
+              <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+                  <Users size={20} className="text-blue-600 dark:text-blue-400" />People Working on This Project
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                <div className="w-10 h-10 rounded-full bg-blue-600 dark:bg-blue-500 text-white flex items-center justify-center font-bold text-sm">{project?.owner?.name?.charAt(0).toUpperCase()}
                 </div>
-              ) : (
-                <p className="text-gray-400 dark:text-gray-500 text-sm">No team members assigned yet.</p>
-              )}
-            </div>
+                <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">{project?.owner?.name}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{project?.owner?.email}</p>
+                <span className="inline-block mt-1 text-xs font-medium text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/40 px-2 py-0.5 rounded-full">
+                Owner
+                </span>
+                </div>
+                </div>
+                {peopleWorkingOnProject.map((member) => (
+                <div key={member._id} className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl">
+                <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-300 flex items-center justify-center font-bold text-sm">{member.name?.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">{member.name}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{member.email}</p>
+                <span className="inline-block mt-1 text-xs font-medium text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/40 px-2 py-0.5 rounded-full">{member.role}
+                </span>
+                </div>
+                </div>
+                ))}
+                {peopleWorkingOnProject.length === 0 && (
+                <div className="col-span-full p-4 bg-gray-50 dark:bg-gray-700 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-center">
+                <p className="text-sm text-gray-500 dark:text-gray-400">No additional team members assigned.</p>
+                </div>
+                )}
+                </div>
+              </div>)}
           </>
         )}
       </div>

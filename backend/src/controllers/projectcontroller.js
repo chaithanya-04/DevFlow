@@ -1,10 +1,11 @@
 import Project from '../models/Project.js';
+import Task from '../models/Task.js';
 
 export const createProject = async (req, res) => {
   try {
-    const { name, description, deadline } = req.body;
+    const { name, startdate, description, deadline } = req.body;
 
-    if (!name || !description || !deadline) {
+    if (!name || !description || !startdate || !deadline) {
       return res.status(400).json({
         success: false,
         message: 'Please provide name, description, and deadline'
@@ -15,6 +16,7 @@ export const createProject = async (req, res) => {
       name,
       description,
       deadline,
+      startdate,
       owner: req.user.userId
     });
 
@@ -67,10 +69,18 @@ export const getProjectById = async (req, res) => {
       });
     }
 
+    const tasks = await Task.find({
+      project: req.params.id
+    }).populate('assignedTo', 'name email role');
+
     res.status(200).json({
       success: true,
-      data: project
+      data: {
+        ...project.toObject(),
+        tasks
+      }
     });
+
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -91,11 +101,11 @@ export const updateProject = async (req, res) => {
       });
     }
 
-    const { name, description, deadline, status } = req.body;
+    const { name, description, startdate, deadline, status } = req.body;
 
     project = await Project.findByIdAndUpdate(
       req.params.id,
-      { name, description, deadline, status },
+      { name, description, startdate, deadline, status },
       { new: true, runValidators: true }
     ).populate('owner', 'name email role');
 

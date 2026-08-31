@@ -4,11 +4,11 @@ const socket = io('http://localhost:5000', {
   transports: ['websocket', 'polling'],
 });
 socket.on('connect', () => {
-  console.log('🔌 Socket connected:', socket.id);
+  console.log('Socket connected:', socket.id);
 });
 
 socket.on('disconnect', () => {
-  console.log('🔌 Socket disconnected');
+  console.log('Socket disconnected');
 });
 
 socket.on('connect_error', (err) => {

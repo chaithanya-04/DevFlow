@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devflow-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    networks:
+      - devflow-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: devflow-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - devflow-network
+
+networks:
+  devflow-network:
+    driver: bridge
